@@ -19,7 +19,7 @@ packet_count=1000
 resolve_addrs_flag=
 filter='tcp or udp'
 err='/dev/stderr'
-dir='inout'
+dir_arg=
 
 while getopts c:nhrf:NQ: opt
 do
@@ -40,7 +40,7 @@ do
 	    err='/dev/null'
 	    ;;
 	Q)
-	    dir=$OPTARG
+	    dir_arg="-Q $OPTARG"
 	    ;;
 	h)
 	    show_help stdout 0
@@ -52,7 +52,7 @@ do
     esac
 done
 
-tcpdump -c $packet_count -q -t $resolve_addrs_flag -q -Q $dir "${filter}" \
+tcpdump -c $packet_count -q -t $resolve_addrs_flag $dir_arg "${filter}" \
 	2>$err \
     | awk '{
             sub(/,$/, "", $5);
